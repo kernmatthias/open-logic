@@ -29,14 +29,14 @@ jobs:
       # Setup python
       - name: Setup Python
         run : |
-          source $LOCAL_TOOLS
+          # source $LOCAL_TOOLS
           cd .github/workflows
           pip install "setuptools<70" setuptools_scm wheel
           pip install --no-build-isolation -r requirements.txt
       # Run simulation
       - name: Run Simulation
         run: |
-          source $LOCAL_TOOLS
+          # source $LOCAL_TOOLS
           cd ./sim
           python3 ./run.py --modelsim --coverage
       # Coverage Simulation (check > 95%)
@@ -44,7 +44,7 @@ jobs:
       - name: Check Coverage Level
         if: github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch'
         run: |
-          source $LOCAL_TOOLS
+          # source $LOCAL_TOOLS
           cd ./sim
           python3 ./AnalyzeCoverage.py --min_coverage=95
       # Coverage Simulation (update badges)
@@ -52,7 +52,7 @@ jobs:
       - name: Create Coverage Badges
         if: github.event_name == 'push' || github.event_name == 'schedule'
         run: |
-          source $LOCAL_TOOLS
+          # source $LOCAL_TOOLS
           cd ./sim
           python3 ./AnalyzeCoverage.py --badges
 
