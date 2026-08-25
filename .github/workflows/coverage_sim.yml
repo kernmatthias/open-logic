@@ -36,7 +36,10 @@ jobs:
         run : |
           # source $LOCAL_TOOLS
           cd ./sim
-          uv sync --no-build-isolation
+          uv --version
+          pwd && ls -la
+          cat pyproject.toml
+          uv sync -v 2>&1 | head -40
       # Run simulation
       - name: Run Simulation
         run: |
