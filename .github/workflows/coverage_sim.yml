@@ -26,19 +26,23 @@ jobs:
         uses: actions/checkout@v5
         with:
           submodules: true
+      # add astral
+      - name: Install uv
+        uses: astral-sh/setup-uv@v10.0.1
+        with:
+          version: '0.12.5' # pin uv version
       # Setup python
       - name: Setup Python
         run : |
           # source $LOCAL_TOOLS
-          cd .github/workflows
-          pip install "setuptools<70" setuptools_scm wheel
-          pip install --no-build-isolation -r requirements.txt
+          cd ./sim
+          uv sync --no-build-isolation
       # Run simulation
       - name: Run Simulation
         run: |
           # source $LOCAL_TOOLS
           cd ./sim
-          python3 ./run.py --modelsim --coverage
+          uv run ./run.py --modelsim --coverage
       # Coverage Simulation (check > 95%)
       # On PRs errors are required if coverage is low
       - name: Check Coverage Level
@@ -46,7 +50,7 @@ jobs:
         run: |
           # source $LOCAL_TOOLS
           cd ./sim
-          python3 ./AnalyzeCoverage.py --min_coverage=95
+          uv run ./AnalyzeCoverage.py --min_coverage=95
       # Coverage Simulation (update badges)
       # On main, we want to udpate badges ALWAYS (also if coverage is low)
       - name: Create Coverage Badges
@@ -54,5 +58,5 @@ jobs:
         run: |
           # source $LOCAL_TOOLS
           cd ./sim
-          python3 ./AnalyzeCoverage.py --badges
+          uv run ./AnalyzeCoverage.py --badges
 
